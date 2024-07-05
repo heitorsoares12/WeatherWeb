@@ -15,9 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   imports: [
     CommonModule,
-    BrowserModule,
     FormsModule,
-    BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
@@ -34,7 +32,7 @@ export class LoginComponent implements OnInit {
   constructor(private loginService: LoginService) {}
 
   ngOnInit(): void {
-    
+
   }
 
   toggleRegister() {
