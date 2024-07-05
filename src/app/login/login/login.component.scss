@@ -1,3 +1,23 @@
-table {
-    width: 100%;
-  }
+.login-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.toggle-link {
+  cursor: pointer;
+  color: #007bff;
+  text-decoration: underline;
+  margin-top: 15px;
+}
+
+.toggle-link:hover {
+  text-decoration: none;
+}
+
+form .form-group {
+  margin-bottom: 15px;
+}

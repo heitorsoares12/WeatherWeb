@@ -14,4 +14,4 @@ import { MatCardModule } from '@angular/material/card';
   ],
   // outros atributos do módulo
 })
-export class AppModule { }
+export class WeatherModule { }

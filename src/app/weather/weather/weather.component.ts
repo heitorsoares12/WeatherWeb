@@ -9,8 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { FavoriteCity, UserFavoritesResponse } from './model/user-favorite';
 import { catchError, forkJoin, map, of } from 'rxjs';
-import { MatButtonModule, MatFabButton } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-weather',
