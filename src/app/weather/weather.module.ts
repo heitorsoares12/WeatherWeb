@@ -10,8 +10,6 @@ import { MatCardModule } from '@angular/material/card';
     MatFormFieldModule,
     MatTableModule,
     MatCardModule,
-    // outros imports
   ],
-  // outros atributos do módulo
 })
 export class WeatherModule { }

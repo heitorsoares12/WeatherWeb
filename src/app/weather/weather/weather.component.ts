@@ -64,7 +64,7 @@ export class WeatherComponent implements OnInit {
         this.snackBar.open(`Cidade ${cityName} favoritada com sucesso!`, 'Fechar', {
           duration: 3000,
         });
-        this.loadUserFavorites(); // Atualiza a lista de favoritos após favoritar uma cidade
+        this.loadUserFavorites();
       },
       error => {
         this.snackBar.open(`Erro ao favoritar cidade ${cityName} `, 'Fechar', {
@@ -104,7 +104,7 @@ export class WeatherComponent implements OnInit {
     if (this.showFavoritesTable) {
       this.getWeatherForFavorites();
     } else {
-      this.getWeather(this.selectedCity); // Carrega dados da cidade selecionada ao desativar showFavoritesTable
+      this.getWeather(this.selectedCity);
     }
   }
 
