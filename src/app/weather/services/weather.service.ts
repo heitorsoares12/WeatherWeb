@@ -18,8 +18,6 @@ export class WeatherService {
       .set('q', city)
       .set('units', 'metric')
       .set('appid', this.apiKey);
-    console.log(params);
-
     return this.http.get(this.apiUrl, { params });
   }
 
