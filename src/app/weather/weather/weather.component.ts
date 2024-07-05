@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FavoriteCity, UserFavoritesResponse } from './model/user-favorite';
 import { catchError, forkJoin, map, of } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-weather',
@@ -29,15 +30,26 @@ import { MatButtonModule } from '@angular/material/button';
 export class WeatherComponent implements OnInit {
   dataSource = new MatTableDataSource<Weather>();
   displayedColumns = ['Local', 'Temp', 'FeelsLike', 'Condition', 'Favorite'];
-  cities: string[] = ['Catanduva', 'São Paulo', 'Rio de Janeiro', 'Belo Horizonte'];
+  cities: string[] = ['','Catanduva', 'São Paulo', 'Rio de Janeiro', 'Belo Horizonte'];
   selectedCity: string = this.cities[0];
   favorites: string[] = [];
   showFavoritesTable = false;
+  user: any;
 
-  constructor(private weatherService: WeatherService, private snackBar: MatSnackBar) {}
+  constructor(
+    private weatherService: WeatherService,
+    private snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private router: Router
+
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state && 'user' in navigation.extras.state) {
+      this.user = navigation.extras.state['user'];
+    }
+  }
 
   ngOnInit(): void {
-    this.getWeather(this.selectedCity);
   }
 
   getWeather(city: string): void {
@@ -46,7 +58,6 @@ export class WeatherComponent implements OnInit {
         this.dataSource.data = [weather];;
       },
       error => {
-        console.error('Erro ao obter dados do clima:', error);
       }
     );
 
@@ -59,23 +70,39 @@ export class WeatherComponent implements OnInit {
   }
 
   toggleFavorite(cityName: string): void {
-    this.weatherService.favoriteCity(cityName).subscribe(
-      response => {
-        this.snackBar.open(`Cidade ${cityName} favoritada com sucesso!`, 'Fechar', {
-          duration: 3000,
-        });
-        this.loadUserFavorites(); // Atualiza a lista de favoritos após favoritar uma cidade
-      },
-      error => {
-        this.snackBar.open(`Erro ao favoritar cidade ${cityName} `, 'Fechar', {
-          duration: 3000,
-        });
-      }
-    );
+    if (this.isFavorite(cityName)) {
+      this.weatherService.unfavoriteCity(this.user.id, cityName).subscribe(
+        response => {
+          this.snackBar.open(`Cidade ${cityName} removida dos favoritos com sucesso!`, 'Fechar', {
+            duration: 3000,
+          });
+          this.loadUserFavorites();
+        },
+        error => {
+          this.snackBar.open(`Erro ao remover cidade ${cityName} dos favoritos`, 'Fechar', {
+            duration: 3000,
+          });
+        }
+      );
+    } else {
+      this.weatherService.favoriteCity(this.user.id, cityName).subscribe(
+        response => {
+          this.snackBar.open(`Cidade ${cityName} favoritada com sucesso!`, 'Fechar', {
+            duration: 3000,
+          });
+          this.loadUserFavorites();
+        },
+        error => {
+          this.snackBar.open(`Erro ao favoritar cidade ${cityName}`, 'Fechar', {
+            duration: 3000,
+          });
+        }
+      );
+    }
   }
 
   loadUserFavorites(): void {
-    this.weatherService.getUserFavorites().pipe(
+    this.weatherService.getUserFavorites(this.user.id).pipe(
       map((response: UserFavoritesResponse) => {
         if (response) {
           const favoriteCities: FavoriteCity[] = response.$values;
@@ -104,7 +131,7 @@ export class WeatherComponent implements OnInit {
     if (this.showFavoritesTable) {
       this.getWeatherForFavorites();
     } else {
-      this.getWeather(this.selectedCity); // Carrega dados da cidade selecionada ao desativar showFavoritesTable
+      this.getWeather(this.selectedCity);
     }
   }
 
@@ -118,7 +145,6 @@ export class WeatherComponent implements OnInit {
         this.dataSource.data = results;
       },
       error => {
-        console.error('Erro ao obter dados do clima para favoritos:', error);
         this.snackBar.open('Erro ao obter dados do clima para favoritos', 'Fechar', {
           duration: 3000,
         });

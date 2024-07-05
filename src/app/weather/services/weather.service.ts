@@ -9,7 +9,7 @@ import { UserFavoritesResponse } from '../weather/model/user-favorite';
 })
 export class WeatherService {
   private apiUrl = 'https://localhost:44341/api/weather';
-  private userApiUrl = 'https://localhost:44341/api/User/1/favorites';
+  private userApiUrl = 'https://localhost:44341/api/User/';
 
   constructor(private http: HttpClient) { }
 
@@ -17,20 +17,24 @@ export class WeatherService {
     return this.http.get<Weather>(`${this.apiUrl}/${city}`).pipe();
   }
 
-  favoriteCity(cityName: string): Observable<any> {
+  favoriteCity(user: string, cityName: string): Observable<any> {
     const params = new HttpParams().set('cityName', cityName);
-    return this.http.post(this.userApiUrl, {}, { params });
+    return this.http.post(this.userApiUrl + user + '/favorites', {},  { params });
   }
 
-  getUserFavorites(): Observable<UserFavoritesResponse> {
+  getUserFavorites(user: string): Observable<UserFavoritesResponse> {
     try {
-      const retorno =  this.http.get<UserFavoritesResponse>(`${this.userApiUrl}`).pipe();;
+      const retorno =  this.http.get<UserFavoritesResponse>(`${this.userApiUrl + user + '/favorites'}`).pipe();;
       return retorno;
-
     }
     catch (error) {
-      console.error('Erro ao obter Favoritos do Usuario.', error);
       throw error;
     }
   }
+
+  unfavoriteCity(user: string, cityName: string): Observable<any> {
+    const params = new HttpParams().set('cityName', cityName);
+    return this.http.delete(`${this.userApiUrl}${user}/favorites`, { params });
+  }
+
 }

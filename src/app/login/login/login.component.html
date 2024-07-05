@@ -1,42 +1,43 @@
 <div class="login-container">
-  <h2>Login</h2>
-  <form (ngSubmit)="submitLoginForm()" #loginForm="ngForm" class="form">
-    <mat-form-field appearance="fill">
-      <mat-label>CPF</mat-label>
-      <input
-        matInput
-        type="text"
-        id="cpf"
-        name="cpf"
-        [(ngModel)]="cpf"
-        required
-      />
-      <mat-error *ngIf="loginForm.submitted && !cpf"
-        >CPF é obrigatório</mat-error
-      >
-    </mat-form-field>
-    <button mat-raised-button color="primary" type="submit">Entrar</button>
-  </form>
-  <div class="toggle-link" (click)="toggleRegister()">Cadastrar novo CPF</div>
-  <div *ngIf="showRegisterForm">
-    <hr />
-    <h2>Cadastro</h2>
-    <form (ngSubmit)="submitRegisterForm()" #registerForm="ngForm" class="form">
-      <mat-form-field appearance="fill">
-        <mat-label>Novo CPF</mat-label>
+    <h2>Login</h2>
+    <form (ngSubmit)="submitLoginForm()" #loginForm="ngForm" class="form">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>CPF</mat-label>
         <input
           matInput
           type="text"
-          id="newCpf"
-          name="newCpf"
-          [(ngModel)]="newCpf"
+          id="cpf"
+          name="cpf"
+          [(ngModel)]="cpf"
           required
         />
-        <mat-error *ngIf="registerForm.submitted && !newCpf"
-          >Novo CPF é obrigatório</mat-error
-        >
+        <mat-error *ngIf="loginForm.submitted && !cpf">
+          CPF é obrigatório
+        </mat-error>
       </mat-form-field>
-      <button mat-raised-button color="primary" type="submit">Cadastrar</button>
+      <button mat-raised-button color="primary" type="submit" class="full-width">Entrar</button>
     </form>
+    <div class="toggle-link" (click)="toggleRegister()">Cadastrar novo CPF</div>
+    <div *ngIf="showRegisterForm">
+      <hr />
+      <h2>Cadastro</h2>
+      <form (ngSubmit)="submitRegisterForm()" #registerForm="ngForm" class="form">
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Novo CPF</mat-label>
+          <input
+            matInput
+            type="text"
+            id="newCpf"
+            name="newCpf"
+            [(ngModel)]="newCpf"
+            required
+          />
+          <mat-error *ngIf="registerForm.submitted && !newCpf">
+            Novo CPF é obrigatório
+          </mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" class="full-width">Cadastrar</button>
+      </form>
+    </div>
   </div>
-</div>
+  

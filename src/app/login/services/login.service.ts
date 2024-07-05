@@ -17,7 +17,7 @@ export class LoginService {
   }
 
   register(cpf: string): Observable<User> {
-    const url = `${this.apiUrl}/user?cpf=${cpf}`;
+    const url = `${this.apiUrl}/register-user?cpf=${cpf}`;
     return this.http.post<User>(url, {});
   }
 }

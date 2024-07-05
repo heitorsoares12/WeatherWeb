@@ -1,23 +1,48 @@
 .login-container {
   max-width: 400px;
   margin: auto;
-  padding: 20px;
+  padding: 2rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 8px;
   background: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+h2 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+form {
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mat-form-field {
+  margin-bottom: 1rem;
+}
+
+button {
+  margin-top: 1rem;
 }
 
 .toggle-link {
   cursor: pointer;
   color: #007bff;
   text-decoration: underline;
-  margin-top: 15px;
+  margin-top: 1rem;
 }
 
 .toggle-link:hover {
   text-decoration: none;
-}
-
-form .form-group {
-  margin-bottom: 15px;
 }
