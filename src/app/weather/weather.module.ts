@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
-  declarations: [],
   imports: [
-    CommonModule,
-  ]
+    MatSelectModule,
+    MatFormFieldModule,
+    MatTableModule,
+    MatCardModule,
+    // outros imports
+  ],
+  // outros atributos do módulo
 })
-export class WeatherModule { }
+export class AppModule { }

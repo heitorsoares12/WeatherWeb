@@ -1,26 +1,88 @@
 <mat-card>
-  <table mat-table [dataSource]="weathers" class="mat-elevation-z8">
+  <mat-form-field *ngIf="!showFavoritesTable" appearance="fill">
+    <mat-label>Selecionar cidade</mat-label>
+    <mat-select [(value)]="selectedCity" (selectionChange)="onCityChange($event.value)">
+      <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Tabela de dados de clima -->
+  <table mat-table *ngIf="!showFavoritesTable" [dataSource]="dataSource" class="mat-elevation-z8">
     <ng-container matColumnDef="Local">
-      <th mat-header-cell *matHeaderCellDef>Local</th>
-      <td mat-cell *matCellDef="let weather">{{ weather.Location }}</td>
+      <th mat-header-cell *matHeaderCellDef class="mat-header-cell-centered">Local</th>
+      <td mat-cell *matCellDef="let weather">{{ weather.location.name }}</td>
     </ng-container>
 
     <ng-container matColumnDef="Temp">
-      <th mat-header-cell *matHeaderCellDef>Temp.</th>
-      <td mat-cell *matCellDef="let weather">{{ weather.Temp }}</td>
+      <th mat-header-cell *matHeaderCellDef class="mat-header-cell-centered">Temp.</th>
+      <td mat-cell *matCellDef="let weather">{{ weather.current.temp }}°C</td>
     </ng-container>
 
-    <ng-container matColumnDef="Max">
-      <th mat-header-cell *matHeaderCellDef>Máx.</th>
-      <td mat-cell *matCellDef="let weather">{{ weather.MaxTemp }}</td>
+    <ng-container matColumnDef="FeelsLike">
+      <th mat-header-cell *matHeaderCellDef class="mat-header-cell-centered">Feels Like</th>
+      <td mat-cell *matCellDef="let weather">{{ weather.current.feelsLike }}°C</td>
     </ng-container>
 
-    <ng-container matColumnDef="Min">
-      <th mat-header-cell *matHeaderCellDef>Min.</th>
-      <td mat-cell *matCellDef="let weather">{{ weather.MinTemp }}</td>
+    <ng-container matColumnDef="Condition">
+      <th mat-header-cell *matHeaderCellDef class="mat-header-cell-centered">Condition</th>
+      <td mat-cell *matCellDef="let weather" class="condition-cell">
+        <img [src]="weather.current.condition.icon" alt="{{ weather.current.condition.text }}">
+        <span>{{ weather.current.condition.text }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Favorite">
+      <th mat-header-cell *matHeaderCellDef class="mat-header-cell-centered">Favoritar</th>
+      <td mat-cell *matCellDef="let weather" class="favorite-cell">
+        <button mat-icon-button (click)="toggleFavorite(weather.location.name)">
+          <mat-icon [class.favorited]="isFavorite(weather.location.name)">star</mat-icon>
+        </button>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="mat-row-centered"></tr>
   </table>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="showFavoritesTable">
+    <ng-container matColumnDef="Local">
+      <th mat-header-cell *matHeaderCellDef class="mat-header-cell-centered">Local</th>
+      <td mat-cell *matCellDef="let weather">{{ weather.location.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Temp">
+      <th mat-header-cell *matHeaderCellDef class="mat-header-cell-centered">Temp.</th>
+      <td mat-cell *matCellDef="let weather">{{ weather.current.temp }}°C</td>
+    </ng-container>
+
+    <ng-container matColumnDef="FeelsLike">
+      <th mat-header-cell *matHeaderCellDef class="mat-header-cell-centered">Feels Like</th>
+      <td mat-cell *matCellDef="let weather">{{ weather.current.feelsLike }}°C</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Condition">
+      <th mat-header-cell *matHeaderCellDef class="mat-header-cell-centered">Condition</th>
+      <td mat-cell *matCellDef="let weather" class="condition-cell">
+        <img [src]="weather.current.condition.icon" alt="{{ weather.current.condition.text }}">
+        <span>{{ weather.current.condition.text }}</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Favorite">
+      <th mat-header-cell *matHeaderCellDef class="mat-header-cell-centered">Favoritar</th>
+      <td mat-cell *matCellDef="let weather" class="favorite-cell">
+        <button mat-icon-button (click)="toggleFavorite(weather.location.name)">
+          <mat-icon [class.favorited]="isFavorite(weather.location.name)">star</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let weather; columns: displayedColumns;" class="mat-row-centered"></tr>
+  </table>
+
+  <button mat-button class="fab" (click)="toggleView()">
+    <mat-icon>{{ showFavoritesTable ? 'search' : 'favorite' }}</mat-icon>
+    <span>{{ showFavoritesTable ? 'Pesquisar' : 'Favoritos' }}</span>
+  </button>
 </mat-card>
